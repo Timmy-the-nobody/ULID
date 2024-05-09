@@ -1,3 +1,6 @@
+Notes:
+This was made for [nanos world™](https://store.steampowered.com/app/1841660/), if you plan to use it outside you'll have to make some tweaks to the library
+
 ### ULID.Clear
 
 `🔸 Client`<br>`🔹 Server`<br>
