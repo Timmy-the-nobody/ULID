@@ -1,3 +1,5 @@
+![ULID](https://github.com/Timmy-the-nobody/ULID/assets/51171246/8ed00273-7e1d-44f3-a25d-e3d2071503d0)
+
 ## ULID
 
 This is a very simple Lua ULID (<b>U</b>niversally unique <b>L</b>exicographically sortable <b>ID</b>entifier) generator
