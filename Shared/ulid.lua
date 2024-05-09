@@ -44,7 +44,7 @@ end
 
 ---`🔸 Client`<br>`🔹 Server`<br>
 ---Returns the ULID registry
----@return table<string, ULID> @The ULID registry
+---@return table<string, any> @The ULID registry
 ---@see ULID.Get
 ---
 function ULID.GetTable()
