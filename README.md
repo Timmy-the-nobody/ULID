@@ -64,7 +64,7 @@ Returns the ULID registry
 
 ```lua
 function ULID.GetTable()
-  -> table<string, ULID>
+  -> table<string, any>
 ```
 
 
