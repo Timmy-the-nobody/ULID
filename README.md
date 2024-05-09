@@ -1,7 +1,11 @@
-Simple ULID (Universally unique Lexicographically sortable IDentifier) generator
+## ULID
+
+This is a very simple Lua ULID (<b>U</b>niversally unique <b>L</b>exicographically sortable <b>ID</b>entifier) generator
 
 Note:
 This was made for [nanos world™](https://store.steampowered.com/app/1841660/), if you plan to use it outside you'll have to make some tweaks to the library
+
+---
 
 ### ULID.Clear
 
