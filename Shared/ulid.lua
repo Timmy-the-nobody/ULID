@@ -10,6 +10,8 @@ local format = string.format
 local sub = string.sub
 local osTime = os.time
 
+math.randomseed((os.time() * 1000) + rand(0, 999999))
+
 ULID = ULID or {}
 Package.Export("ULID", ULID)
 
