@@ -6,33 +6,44 @@
 
 local rand = math.random
 local concat = table.concat
-local format = string.format
-local sub = string.sub
 local osTime = os.time
-
-math.randomseed((os.time() * 1000) + rand(0, 999999))
 
 ULID = ULID or {}
 Package.Export("ULID", ULID)
 
+math.randomseed((osTime() * 1000) + rand(0, 999999))
+
 local __tULIDMap = {}
-
--- Number of entropy characters (total length will be 10 + this value)
 local iEntropyChars = 16
--- ULID regex pattern, used for validation
-local sULIDPattern = "^"..string.rep("[0-9a-f]", 10 + iEntropyChars).."$"
 
--- Cache hex code, for faster lookup
-local tHexMap = {}
-for i = 0, 15 do tHexMap[i] = format("%x", i) end
+-- ULID pattern (used for fast validation in `string.IsULID`)
+local sULIDPattern = "^"..string.rep("[0-9A-HJ-NP-TV-Z]", 10 + iEntropyChars).."$"
 
--- Internal function that generates the ULID hash
+-- Base32 character lookup table
+local sBase32Chars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+local tBase32Map = {}
+for i = 0, 31 do
+    tBase32Map[i] = sBase32Chars:sub(i + 1, i + 1)
+end
+
+-- Convert a number to Base32 efficiently
+local function toBase32(iNum, iLen)
+    local tRes = {}
+    for i = iLen, 1, -1 do
+        tRes[i] = tBase32Map[iNum % 32]
+        iNum = math.floor(iNum / 32)
+    end
+    return concat(tRes)
+end
+
+-- Generate an ULID
 local function generateULID()
     local tEntropy = {}
     for i = 1, iEntropyChars do
-        tEntropy[#tEntropy + 1] = tHexMap[rand(0, 15)]
+        tEntropy[i] = tBase32Map[math.random(0, 31)]
     end
-    return sub(format("%010x", osTime() * 100), -10)..concat(tEntropy)
+
+    return toBase32(math.floor(osTime() * 1000), 10)..concat(tEntropy)
 end
 
 ---`🔸 Client`<br>`🔹 Server`<br>
