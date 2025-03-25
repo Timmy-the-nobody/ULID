@@ -96,6 +96,5 @@ end
 ---@return boolean @Wether the string is an ULID
 ---
 function string.IsULID(self)
-    if not self or (#self ~= (10 + iEntropyChars)) then return false end
-    return string.match(self, sULIDPattern) ~= nil
+    return (type(self) == "string") and (string.match(self, sULIDPattern) ~= nil)
 end
