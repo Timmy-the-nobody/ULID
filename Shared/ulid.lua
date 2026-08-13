@@ -9,37 +9,39 @@ local concat = table.concat
 local type = type
 local match = string.match
 local byte = string.byte
+local getMs = (Server and Server.GetTime or Client.GetTime)
+
+math.randomseed((os.time() * 1000) + rand(0, 999999))
 
 ---@class ULID
 ULID = ULID or {}
 Package.Export("ULID", ULID)
 
-math.randomseed((os.time() * 1000) + rand(0, 999999))
-
-local getMs = Server and Server.GetTime or Client.GetTime
-
 local __tULIDMap = {}
 local iEntropyChars = 16
 
+-- This is not a config value: don't change it!
+local iTotalChars = 10 + iEntropyChars
+
 -- ULID pattern (used for fast validation in `string.IsULID`)
-local sULIDPattern = "^"..string.rep("[0-9A-HJ-NP-TV-Z]", 10 + iEntropyChars).."$"
+local sULIDPattern = "^"..string.rep("[0-9A-HJ-NP-TV-Z]", iTotalChars).."$"
 
 -- Base32 encode/decode lookup tables
-local sBase32Chars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 local tBase32Map = {}
 local tBase32Decode = {}
 do
     local sub = string.sub
+    local sBase32Chars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
     for i = 0, 31 do
-        local c = sub(sBase32Chars, i + 1, i + 1)
-        tBase32Map[i] = c
-        tBase32Decode[byte(c)] = i
+        local sChar = sub(sBase32Chars, i + 1, i + 1)
+        tBase32Map[i] = sChar
+        tBase32Decode[byte(sChar)] = i
     end
 end
 
 -- Pre-allocated result buffer and monotonicity state
 local tResult = {}
-for i = 1, 10 + iEntropyChars do tResult[i] = false end
+for i = 1, iTotalChars do tResult[i] = false end
 
 local iLastMs = 0
 local tLastEntropy = {}
